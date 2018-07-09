@@ -19,7 +19,6 @@ ul {
   list-style: none;
 }
 
-/*Knows about flexbox*/
 nav ul {
   display: flex;
   justify-content: space-between;

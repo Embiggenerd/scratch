@@ -9,22 +9,29 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.resolve(__dirname, '..', 'public')));
 
-app.set('view engine', 'ejs');
-
 app.get('/', (req, res) => {
-  res.render(path.resolve(__dirname, '..', 'public', 'index.html'), {
-    db: todos
-  });
+  res.send(path.resolve(__dirname, '..', 'public', 'index.html'));
 });
 
-app.post('/', (req, res) => {
+app.get('/api/todos', (req, res) => {
+  res.json({ todos: db.todos });
+});
+
+app.post('/api/todos', (req, res) => {
   // forking data here
-  db.todos = [...db.todos, req, body.todo];
-  if (db.todos[-1] === req.body.todo) {
+  db.todos = [...db.todos, req.body.todo];
+  if (db.todos[db.todos.length - 1] === req.body.todo) {
     res.json(req.body);
   } else {
-    res.status(500).send('Oops, database error');
+    res.status(500).json('Oops, database error');
   }
 });
 
+app.use((req, res, next) => {
+  res.status(404).json({ error: 'bad request' });
+});
+
+app.use((err, req, res, next) => {
+  res.status(500).json({ error: err.message });
+});
 module.exports = app;

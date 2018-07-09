@@ -11,10 +11,10 @@
     get getTodos() {
       return this.todos;
     },
-    set addTodo(todo) {
-      this.todos = [...todos, todo];
+    addTodo(todo) {
+      this.todos = [...this.todos, todo];
     },
-    set populateTodos(todos) {
+    populateTodos(todos) {
       this.todos = todos;
     },
     addToList(list, todo) {
@@ -27,7 +27,11 @@
     }
   };
 
-  fetch('http://localhost:3000/', {
+  const ul = document.querySelector('#todos-list');
+  const form = document.querySelector('#todos-form');
+  const inputField = document.querySelector('#todos-field');
+
+  fetch('http://localhost:3000/api/todos/', {
     headers: {
       'Content-type': 'application/json',
       Accept: 'application/json'
@@ -43,21 +47,9 @@
   });
 
   const render = () => {
-    // const el = elem => {
-    //   if (elem.charAt(0) === '#') {
-    //     // If passed an ID...
-    //     return document.querySelector(elem); // ... returns single element
-    //   }
-    //   return document.querySelectorAll(elem); // Otherwise, returns a nodelist
-    // };
-
-    const ul = document.querySelector('#todos-list');
-    const form = document.querySelecto('#todos-form');
-    const inputField = document.querySelecto('#todos-field');
-
     form.addEventListener('submit', e => {
       e.preventDefault();
-      fetch('http://localhost:3000/', {
+      fetch('http://localhost:3000/api/todos', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
