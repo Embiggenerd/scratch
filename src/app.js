@@ -3,6 +3,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 
+const UserService = require('./services/user');
+//const UserModel = require('./models/user');
+
 const db = { todos: ['buy milk', 'buy clothes'] };
 
 app.use(bodyParser.json());
@@ -24,6 +27,32 @@ app.post('/api/todos', (req, res) => {
     res.json(req.body);
   } else {
     res.status(500).json('Oops, database error');
+  }
+});
+
+app.get('/api/user', async (req, res) => {
+  try {
+    const usersList = await UserService.listUsers();
+    res.json(usersList);
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.post('/api/user', async (req, res, next) => {
+  try {
+    const savedUser = UserService.createUser(
+      req.body.firstName,
+      req.body.lastName
+    );
+    // const user = new UserModel({
+    //   firstName: req.body.firstName,
+    //   lastName: req.body.lastName
+    // });
+    // const savedUser = await user.save();
+    res.json(savedUser);
+  } catch (e) {
+    next(e);
   }
 });
 
