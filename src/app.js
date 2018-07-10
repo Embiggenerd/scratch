@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const UserService = require('./services/user');
+const UserService = require('./libs/user');
 //const UserModel = require('./models/user');
 
 const db = { todos: ['buy milk', 'buy clothes'] };

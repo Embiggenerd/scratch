@@ -1,4 +1,4 @@
-const UserService = require('../user/user_service');
+const UserService = require('../user_service');
 const sinon = require('sinon');
 
 describe('User service test', () => {

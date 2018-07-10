@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const testDB = 'mongodb://localhost/ribbit3-test';
 // mongoose.connect(testDB);
 
-const UserModel = require('../user');
+const UserModel = require('../user_model');
 
 describe('User model test', () => {
   beforeAll(async () => {
