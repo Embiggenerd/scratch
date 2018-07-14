@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 
 const testDB = 'mongodb://localhost/ribbit3-test';
-const app = require('../app');
+const app = require('../../../app');
 
 describe('App test', () => {
   it('Module defined', () => {

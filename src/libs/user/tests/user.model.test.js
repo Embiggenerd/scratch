@@ -30,8 +30,8 @@ describe('User model test', () => {
 
   describe('Get users', () => {
     const userObj = {
-      firstName: 'iggles',
-      lastName: 'theClown'
+      username: 'iggles',
+      password: 'theClown'
     };
     it('Saves a user', async () => {
       const user = new UserModel(userObj);

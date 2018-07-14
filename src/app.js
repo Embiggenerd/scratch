@@ -2,11 +2,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
+const bcrypt = require('bcrypt');
+const session = require('express-session');
+const { isLoggedIn } = require('./libs/middleware');
 
 const UserService = require('./libs/user');
-//const UserModel = require('./models/user');
+const pathTo = fileName => path.resolve(__dirname, '..', 'public', fileName);
 
-const db = { todos: ['buy milk', 'buy clothes'] };
+// const db = { todos: ['buy milk', 'buy clothes'] };
 
 app.use(bodyParser.json());
 
@@ -30,27 +33,38 @@ app.post('/api/todos', (req, res) => {
   }
 });
 
-app.get('/api/user', async (req, res) => {
+app.get('/register', async (req, res) => {
+  res.sendFile(pathTo('register.html'));
+});
+
+app.post('/register', async (req, res, next) => {
   try {
-    const usersList = await UserService.listUsers();
-    res.json(usersList);
+    const UserCount = await UserServices.countUsers(username);
+    if (UserCount > 0)
+      return res.json({ error: `${username} is already registered` });
+    const savedUser = await UserService.createUser(
+      req.body.username,
+      req.body.password
+    );
+    res.json(savedUser);
   } catch (e) {
     next(e);
   }
 });
 
-app.post('/api/user', async (req, res, next) => {
+app.get('/login', (req, res) => {
+  res.sendFile(pathTo('login.html'));
+});
+
+app.post('/login', (req, res, next) => {
+  const { username, password } = req.body;
   try {
-    const savedUser = UserService.createUser(
-      req.body.firstName,
-      req.body.lastName
-    );
-    // const user = new UserModel({
-    //   firstName: req.body.firstName,
-    //   lastName: req.body.lastName
-    // });
-    // const savedUser = await user.save();
-    res.json(savedUser);
+    const validUser = UserService.validateUser(username, password);
+    if (validUser) {
+      req.session.userId = validUser.id;
+      return res.redirect('todos');
+    }
+    res.redirect('/401');
   } catch (e) {
     next(e);
   }

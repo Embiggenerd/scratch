@@ -5,13 +5,26 @@ describe('User service test', () => {
   it('Module is defined', () => {
     expect(UserService).toBeDefined();
   });
-  describe('listUsers test', () => {
-    it('Calls find', () => {
-      const MockModel = {
-        find: sinon.spy()
+  describe('findUsers test', () => {
+    it('Calls find on username', () => {
+      let username;
+      const find = function(str) {
+        username = str;
       };
+
+      const MockModel = function(data) {
+        username = data.username;
+        return {
+          ...data,
+          find
+        };
+      };
+      // const MockModel = {
+      //   find: sinon.spy()
+      // };
+
       const userService = UserService(MockModel);
-      userService.listUsers();
+      userService.listUsers('igor');
       const expected = true;
       const actual = MockModel.find.calledOnce;
       expect(actual).toEqual(expected);
@@ -24,7 +37,8 @@ describe('User service test', () => {
       let lastName;
 
       const MockModel = function(data) {
-        (firstName = data.firstName), (lastName = data.lastName);
+        firstName = data.firstName;
+        lastName = data.lastName;
         return {
           ...data,
           save
