@@ -21,44 +21,45 @@ describe('App test', () => {
     await server.close();
   });
 
+
   describe('User routes test', () => {
-    it('Can list users', async () => {
+    it('Can request registration page', async () => {
       await request(server)
-        .get('/api/user')
+        .get('/user/register')
         .expect(200);
     });
-    it('Can post users', async () => {
+    it('Can register users', async () => {
       await request(server)
-        .post('/api/user')
+        .post('/user/register')
         .send({
-          firstName: 'hithere',
-          lastName: 'howyoudoin'
+          username: 'igor',
+          password: 'howyoudoin'
         })
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
         .expect(200);
     });
-    it('Fails if first name is missing in post users', async () => {
+    it('Fails if username is missing in post users', async () => {
       await request(server)
         .post('/api/user')
         .send({
-          lastName: 'howyoudoin'
+          password: 'howyoudoin'
         })
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
         .expect(500);
     });
-    it('Fails if last name is missing in post users', async () => {
+    it('Fails if password name is missing in post users', async () => {
       await request(server)
         .post('/api/user')
         .send({
-          firstName: 'hi there'
+          userame: 'hi there'
         })
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
         .expect(500);
     });
-    it('Fails if birthday and name is missing in post users', async () => {
+    it('Fails if username and password is missing in post users', async () => {
       await request(server)
         .post('/api/user')
         .expect(500);

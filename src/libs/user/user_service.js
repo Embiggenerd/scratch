@@ -2,7 +2,8 @@ const {
   comparePasswords,
   encryptPassword,
   countUsers,
-  findUser
+  findUser,
+
 } = require('../utils');
 // const createUser = User => (firstName, lastName) => {
 //   if (!firstName || !lastName)
