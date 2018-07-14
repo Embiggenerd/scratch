@@ -2,8 +2,7 @@ const {
   comparePasswords,
   encryptPassword,
   countUsers,
-  findUser,
-
+  findUser
 } = require('../utils');
 // const createUser = User => (firstName, lastName) => {
 //   if (!firstName || !lastName)
@@ -12,13 +11,13 @@ const {
 //   return user.save();
 // };
 
-const createUser = User => (username, password) => {
+const createUser = User => async (username, password) => {
   if (!username || !password)
     throw new Error(`username: ${username} password: ${password}`);
 
   const user = new User({
     username,
-    password: encryptPassword(password, 2)
+    password: await encryptPassword(password, 2)
   });
   return user.save();
 };
